@@ -41,7 +41,7 @@ char *(*get_che_str_func(char c))(char *, va_list);
 char *_create_hex_upper(char *str, va_list valist);
 char *_hex_upper(unsigned int n);
 
-/*help-handlers1.c__ handles conversion, checks for digit, checks for strlen,copy*/
+/* ---------- help-handlers1.c ---------- */
 int convert_c(char c);
 int _is_digit(char c);
 int _strlen(const char *s);
@@ -53,7 +53,8 @@ int _isdflag(char *c);
 /*help-handlers.c__ pres check, width check and returns result*/
 int format_precision(char *s, char format);
 int width_handler(char *s, char format);
-*ptr_result(char *arr, char *s, int pres, int width, int slen, int flen, int mlen);
+char *ptr_result(char *arr, char *s, int pres, int width,
+int slen, int flen, int mlen);
 
 /*unsigned-int.c__ Unsigned int conversion and making of str*/
 int convert_s(char *s);
@@ -66,7 +67,7 @@ int convert_str(char *s);
 
 /*octadeci.c__checks for octa,converts to octa*/
 int octa_check(char *s);
-char *convert_2octa(unsigned int n,int b);
+char *convert_2octa(unsigned int n, int b);
 char *make_octal(char *s, va_list l);
 
 /*our_printf.c__error check,a copy of printf funct*/
