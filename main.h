@@ -1,112 +1,119 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 #include <limits.h>
 
-/* ---------- MACROS ---------- */
-#define BUF_LENGTH 1024
 
-/* ---------- PROTOTYPE FOR BINARY ---------- */
-int _binary_conversion(char *str);
-char *_create_binary(char *str, va_list valist);
+#define UNUSED(x) (void)(x)
+#define BUFF_SIZE 1024
 
-/* ---------- PROTOTYPE FOR BUFFER ---------- */
-char *_buffer_flush(char *buffer);
-char *_buff_fill(char *buffer, const char *s, int count_c, int s_length);
-void _write_buffer(char *buffer, int len);
+/* FLAGS */
+#define F_MINUS 1
+#define F_PLUS 2
+#define F_ZERO 4
+#define F_HASH 8
+#define F_SPACE 16
 
-/* ---------- PROTOTYPE FOR CHAR ---------- */
-char *_create_char(char *str, va_list valist);
-int _convert_char(char *str);
+/* SIZES */
+#define S_LONG 2
+#define S_SHORT 1
 
-/* ---------- PROTOTYPE FOR DECIMAL ----------*/
-char *_create_decimal(char *str, va_list valist);
-int _convert_di(char *str);
-char *_aoti(int num);
+/**
+ * struct fmt - Struct op
+ *
+ * @fmt: The format.
+ * @fn: The function associated.
+ */
+struct fmt
+{
+	char fmt;
+	int (*fn)(va_list, char[], int, int, int, int);
+};
 
-/* ---------- PROTOTYPE FOR FORMAT HANDLER ---------- */
-char *_get_format(const char *fmt);
-void _format_filler(const char *fmt);
+/**
+ * typedef struct fmt fmt_t - Struct op
+ *
+ * @fmt: The format.
+ * @fm_t: The function associated.
+ */
+typedef struct fmt fmt_t;
 
-/* ---------- PROTOTYPE FOR GET_VALID_FUN && GET_CHE_STR_FUNC ---------- */
-int (*get_valid_func(char c))(char *);
-char *(*get_che_str_func(char c))(char *, va_list);
-
-/* ---------- PROTOTYPE FOR UPPERCASE HEX ---------- */
-char *_create_hex_upper(char *str, va_list valist);
-char *_hex_upper(unsigned int n);
-
-/* ---------- help-handlers1.c ---------- */
-int convert_c(char c);
-int _is_digit(char c);
-int _strlen(const char *s);
-char *_strncpy(char *dest, const char *src, int n);
-int _isdflag(char *c);
-
-
-
-/*help-handlers.c__ pres check, width check and returns result*/
-int format_precision(char *s, char format);
-int width_handler(char *s, char format);
-char *ptr_result(char *arr, char *s, int pres, int width,
-int slen, int flen, int mlen);
-
-/*unsigned-int.c__ Unsigned int conversion and making of str*/
-int convert_s(char *s);
-char *num_tostr(unsigned int n);
-char *make_unsigned(char *s, va_list l);
-
-/*str-make.c__creates formatted str,checks format if its right*/
-char *str_make(char *s, va_list vl);
-int convert_str(char *s);
-
-/*octadeci.c__checks for octa,converts to octa*/
-int octa_check(char *s);
-char *convert_2octa(unsigned int n, int b);
-char *make_octal(char *s, va_list l);
-
-/*our_printf.c__error check,a copy of printf funct*/
-void error_f(const char *format);
 int _printf(const char *format, ...);
+int _print_flag_handlers(const char *fmt, int *i, va_list valist,
+char buf[], int f, int w, int p, int s);
 
+/****************** FUNCTIONS ******************/
 
-/*hexa.c__checks, converts to hex, print rev numb*/
+/* Funtions to print chars and strings */
+int _char_flag(va_list valist, char buf[], int f, int w, int p, int s);
+int _print_str_flag(va_list valist, char buf[], int f, int w, int p, int s);
+int _print_percent_flag(va_list valist, char buf[], int f,
+int w, int p, int s);
 
-int conversion_h(char *s);
-char *hex(unsigned int n);
-char *make_hex(char *s, va_list l);
-void reverse_array(char *a, int n);
+/* Functions to print numbers */
+int _print_integer_flag(va_list valist, char buf[],
+int f, int w, int p, int s);
+int _binary_flag(va_list valist, char buf[], int f,
+int w, int p, int s);
+int _print_unsigned_flag(va_list valist, char buf[],
+int f, int w, int p, int s);
+int _print_octal_flag(va_list valist, char buf[],
+int f, int w, int p, int s);
+int _print_hex_lower(va_list valist, char buf[], int f,
+int w, int p, int s);
+int _print_hex_upper(va_list valist, char buf[], int f,
+int w, int p, int s);
 
+int _print_hex_num(va_list valist, char map_to[], char buf[],
+int f, char f_ch, int w, int p, int s);
 
+/* Function to print non printable characters */
+int _check_no_print(va_list valist, char buf[], int f, int w, int p, int s);
 
+/* Funcion to print memory address */
+int _print_pointer_flag(va_list valist, char buf[],
+int f, int w, int p, int s);
 
-/*structs*/
-/**
- * struct valid - Checks for formatting Valiity
- * @type: Type
- * @conver_check: Funct to check for str conversion validity
- */
-typedef struct valid
-{
-	char type;
-	int (*conver_check)(char *);
-} valid;
+/* Funciotns to handle other specifiers */
+int _retrieve_flag(const char *format, int *i);
+int _check_width_flag(const char *format, int *i, va_list valist);
+int _check_precision_flag(const char *format, int *i, va_list valist);
+int _check_size_flag(const char *format, int *i);
 
-/**
- * struct che_str - Checks for validity
- * @type: Checks for type of ent
- * @make_s: Dev the str
- */
-typedef struct che_str
-{
-	char type;
-	char *(*make_s)(char *, va_list);
-} che_str;
+/*Function to print string in reverse*/
+int _print_reverse_flag(va_list valist, char buf[],
+int f, int w, int p, int s);
 
+/*Function to print a string in rot 13*/
+int _print_rot(va_list valist, char buf[], int f, int w, int p, int s);
+
+/* width handler */
+int _char_print_handler(char c, char buf[], int f, int w, int p, int s);
+
+int _print_number(int is_positive, int ind, char buf[], int f,
+int w, int p, int s);
+
+int _print_num_flag(int ind, char bff[], int f, int w, int p,
+int len, char padd, char extra_c);
+
+int _print_pointer(char buf[], int ind, int len, int w, int f,
+char padd, char extra_c, int padd_start);
+
+int _print_unsignd(int is_negative, int ind, char buf[],
+int f, int w, int p, int s);
+
+/****************** UTILS ******************/
+int _check_can_print(char);
+int _join_hex(char, char[], int);
+int _check_is_digit(char);
+
+long int _number_size_converter(long int num, int s);
+long int _unsigned_size_converter(unsigned long int num, int s);
 
 #endif /* MAIN_H */
+

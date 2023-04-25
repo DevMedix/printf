@@ -1,70 +1,66 @@
 #include "main.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
+
+void _check_buffer(char buf[], int *buff_ind);
 
 /**
- * error_f - Returns error
- * @format: Format
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
  */
-
-void error_f(const char *format)
-{
-	if (!format || !*format)
-	{
-		write(1, "error", 6);
-		exit(98);
-	}
-}
-
-/**
- * _printf - Our printf copy
- * @format: String format
- * Return: Numb of chars printed
- */
-
 int _printf(const char *format, ...)
 {
-	int i, b, l_conv, flag;
-	char *buffer, *conv, *format_str;
-	va_list alist;
+	int i, printed = 0, printed_chars = 0;
+	int f, w, p, s, buff_ind = 0;
+	va_list valist;
+	char buf[BUFF_SIZE];
 
-	error_f(format);
-	buffer = malloc(BUF_LENGTH * sizeof(char));
-	_buffer_flush(buffer);
-	va_start(alist, format), flag = b = 0;
-	for (i = 0; format[i] != '\0';)
+	if (format == NULL)
+		return (-1);
+
+	va_start(valist, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
-			_buff_fill(buffer, format + i, b, 1);
-			i += 1, b += 1;
+			buf[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				_check_buffer(buf, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
 		}
-		if (format[i] == '%')
+		else
 		{
-			flag = 1, conv = _get_format(format + i);
-			if (format[i + 1] == '%' || conv == NULL)
-			{
-				flag = (flag == 0) ? 1 : 0;
-				_buff_fill(buffer, format + i, b, 1);
-				i += 2, b += 1;
-			}
-		}
-		if (flag == 1)
-		{
-			flag = 0;
-			conv = _get_format(format + i);
-			l_conv = _strlen(conv);
-			format_str = get_che_str_func(conv[l_conv - 1])(conv, alist);
-			free(conv);
-			_buff_fill(buffer, format_str, b, _strlen(format_str));
-			b = b + _strlen(format_str);
-			free(format_str), i += l_conv;
+			_check_buffer(buf, &buff_ind);
+			f = _retrieve_flag(format, &i);
+			w = _check_width_flag(format, &i, valist);
+			p = _check_precision_flag(format, &i, valist);
+			s = _check_size_flag(format, &i);
+			++i;
+			printed = _print_flag_handlers(format, &i, valist, buf, f, w, p, s);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
 		}
 	}
-		_write_buffer(buffer, b);
-		free(buffer);
-		return (b);
+
+	_check_buffer(buf, &buff_ind);
+
+	va_end(valist);
+
+	return (printed_chars);
 }
+
+/**
+ * _check_buffer - Prints the contents of the buffer if it exist
+ * @buf: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
+ */
+void _check_buffer(char buf[], int *buff_ind)
+{
+	if (*buff_ind > 0)
+		write(1, &buf[0], *buff_ind);
+
+	*buff_ind = 0;
+}
+
