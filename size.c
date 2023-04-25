@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * _check_size_flag - check size
- * @format: format
- * @i: integer pointer
+ * _check_size_flag - A funct that checks size
+ * @format: Format
+ * @i: Integer pointer
  *
- * Return: int
+ * Return: Integer
  */
 int _check_size_flag(const char *format, int *i)
 {
