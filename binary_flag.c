@@ -28,7 +28,7 @@ char *_create_binary(char *str, va_list valist)
 	(void) str;
 
 	num = va_arg(valist, unsigned int);
-	res = octorbi(num, 2);
+	res = convert_2octa(num, 2);
 	return (res);
 }
 
