@@ -10,14 +10,14 @@ int (*get_valid_func(char c))(char *)
 {
 	valid check_v[] = {
 		{'c', _convert_char},
-		{'s', conversion_string},
+		{'s', convert_str},
 		{'d', _convert_di},
 		{'i', _convert_di},
-		{'u', conversion_u},
+		{'u', convert_s},
 		{'x', conversion_h},
 		{'X', conversion_h},
 		{'b', _binary_conversion},
-		{'o', conversion_o}
+		{'o', octa_check}
 	};
 	int i;
 
