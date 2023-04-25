@@ -11,9 +11,9 @@ char *_get_format(const char *fmt)
 	char *convert;
 
 	j = 0;
-	while (no_conversion(fmt[j]) && fmt[j])
+	while (convert_c(fmt[j]) && fmt[j])
 		++j;
-	if (no_conversion(fmt[j]))
+	if (convert_c(fmt[j]))
 	{
 		return (NULL);
 	}
@@ -53,7 +53,7 @@ void _format_filler(const char *fmt)
 			flag = 0;
 			convert = _get_format(fmt + i);
 			l_convert = _strlen(convert);
-			get_validity_func(convert[l_convert - 1])(convert);
+			get_valid_func(convert[l_convert - 1])(convert);
 			free(convert);
 			i += l_convert - 1;
 
