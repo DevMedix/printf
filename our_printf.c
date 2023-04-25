@@ -33,38 +33,38 @@ int _printf(const char *format, ...)
 
 	error_f(format);
 	buffer = malloc(BUF_LENGTH * sizeof(char));
-	_flush(buffer);
+	_buffer_flush(buffer);
 	va_start(alist, format), flag = b = 0;
 	for (i = 0; format[i] != '\0';)
 	{
 		if (format[i] != '%')
 		{
-			fill_buffer(buffer, format + i, b, 1);
+			_buff_fill(buffer, format + i, b, 1);
 			i += 1, b += 1;
 		}
 		if (format[i] == '%')
 		{
-			flag = 1, conv = grab_format(format + i);
+			flag = 1, conv = _get_format(format + i);
 			if (format[i + 1] == '%' || conv == NULL)
 			{
 				flag = (flag == 0) ? 1 : 0;
-				fill_buffer(buffer, format + i, b, 1);
+				_buff_fill(buffer, format + i, b, 1);
 				i += 2, b += 1;
 			}
 		}
 		if (flag == 1)
 		{
 			flag = 0;
-			conv = grab_format(format + i);
+			conv = _get_format(format + i);
 			l_conv = _strlen(conv);
-			format_str = get_mstring_func(conv[l_conv - 1])(conv, alist);
+			format_str = get_che_str_func(conv[l_conv - 1])(conv, alist);
 			free(conv);
-			fill_buffer(buffer, format_str, b, _strlen(format_str));
+			_buff_fill(buffer, format_str, b, _strlen(format_str));
 			b = b + _strlen(format_str);
 			free(format_str), i += l_conv;
 		}
 	}
-		print_buffer(buffer, b);
+		_write_buffer(buffer, b);
 		free(buffer);
 		return (b);
 }
