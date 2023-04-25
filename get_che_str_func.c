@@ -10,7 +10,7 @@ char *(*get_che_str_func(char c))(char *, va_list)
 {
 	che_str check[] = {
 		{'c', _create_char},
-		{'s', make_string},
+		{'s', str_make},
 		{'d', _create_decimal},
 		{'i', _create_decimal},
 		{'u', make_unsigned},
