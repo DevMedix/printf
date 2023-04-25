@@ -27,7 +27,7 @@ char *hex(unsigned int n)
 	char *mem;
 
 	i = 0;
-	ns = malloc(sizeof(char) * 100);
+	mem = malloc(sizeof(char) * 100);
 	do {
 		mem[i++] = (c[n % 16]);
 		n = n / 16;
@@ -71,7 +71,7 @@ void reverse_array(char *a, int n)
 	{
 		mem = a[i];
 		a[i] = a[n];
-		a[n] = temp;
+		a[n] = mem;
 		i++;
 		n--;
 	}
