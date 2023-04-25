@@ -20,8 +20,8 @@ char *str_make(char *s, va_list vl)
 	string = va_arg(vl, char *);
 	if (string == NULL)
 		exit(98);
-	p = give_precision(s, 's');
-	w = give_width(s, 's');
+	p = format_precision(s, 's');
+	w = width_handler(s, 's');
 	slen = _strlen(string);
 	flen = _strlen(s);
 
@@ -32,7 +32,7 @@ char *str_make(char *s, va_list vl)
 	else
 		mlen = slen;
 	result = malloc(sizeof(char) * (mlen + 1));
-	result = get_result(result, string, p, w, slen, flen, mlen);
+	result = ptr_result(result, string, p, w, slen, flen, mlen);
 	return (result);
 }
 
@@ -58,8 +58,10 @@ int convert_str(char *s)
 			return (0);
 		}
 		if (_is_digit(*(s + i)) == 0 && *(s + i) == '.')
+		{
 			flag = 1;
 			++i;
+		}
 		i++;
 	}
 	return (1);
