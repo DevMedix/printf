@@ -1,15 +1,15 @@
 #include "main.h"
 
 /**
- * _print_reverse_flag - prints reverse
- * @valist: va_list variable
- * @buf: buffer
- * @f: flag
- * @w: width
- * @p: precision
- * @s: size
+ * _print_reverse_flag - A funct that prints reverse
+ * @valist: Va_list variable
+ * @buf: Buffer
+ * @f: Flag
+ * @w: Width
+ * @p: Precision
+ * @s: Size
  *
- * Return: int
+ * Return: Integer
  */
 int _print_reverse_flag(va_list valist, char buf[],
 	int f, int w, int p, int s)
