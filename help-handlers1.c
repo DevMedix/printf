@@ -8,7 +8,7 @@
 
 int convert_c(char c)
 {
-	char arr[] = "AbcdthenUkeb";
+	char arr[] = "csdiuoxXpb";
 	int i;
 
 	for (i = 0; i < 10; i++)
