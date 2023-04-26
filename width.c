@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * _check_width_flag - check wiidth
- * @valist: va_list variable
- * @format: format
- * @i: integer pointer
- * Return: int
+ * _check_width_flag - A funct that checks wiidth
+ * @valist: Va_list variable
+ * @format: Format
+ * @i: Integer pointer
+ * Return: Integer
  */
 int _check_width_flag(const char *format, int *i, va_list valist)
 {
