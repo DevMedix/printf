@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * _check_precision_flag - checks precision
- * @valist: va_list variable
- * @i: integer pointer
- * @format: format
+ * _check_precision_flag - A func that checks precision
+ * @valist: Va_list variable
+ * @i: Integer pointer
+ * @format: Format
  *
- * Return: int
+ * Return: Integer
  */
 int _check_precision_flag(const char *format, int *i, va_list valist)
 {
